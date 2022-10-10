@@ -2,6 +2,7 @@ const { ObjectId } = require('mongoose').Types;
 const { User, Thought } = require('../models');
 
 module.exports = {
+
     // GET all users
     getUsers(req, res) {
         User.find()
@@ -50,8 +51,8 @@ module.exports = {
                 : res.json(user)
         )
         .catch((err) => {
-              console.log(err);
-              res.status(500).json(err);
+            console.log(err);
+            res.status(500).json(err);
         });
     },
 
@@ -59,9 +60,9 @@ module.exports = {
     deleteUser(req, res) {
         User.findOneAndDelete({ _id: req.params.userId })
         .then((user) =>
-        !user
-            ? res.status(404).json({ message: 'No user with that ID' })
-            : Thought.deleteMany({ _id: { $in: user.thoughts } })
+            !user
+                ? res.status(404).json({ message: 'No user with that ID' })
+                : Thought.deleteMany({ _id: { $in: user.thoughts } })
         )
         .then(() => res.json({ message: 'User and thoughts deleted!' }))
         .catch((err) => res.status(500).json(err));
