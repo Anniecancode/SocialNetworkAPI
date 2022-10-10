@@ -68,7 +68,7 @@ module.exports = {
         .catch((err) => res.status(500).json(err));
     },
 
-    // ADD friend
+    // ADD a friend
     addFriend(req, res) {
         console.log('You are adding a new friend');
         console.log(req.body);
@@ -87,11 +87,11 @@ module.exports = {
         .catch((err) => res.status(500).json(err));   
     },
 
-    // DELETE friend
+    // DELETE a friend
     deleteFriend(req, res) {
         User.findOneAndUpdate(
             { _id: req.params.userId },
-            { $pull: { friend: { friendId: req.params.friendId } } },
+            { $pull: { friend: { friendId: req.params.friendId }}},
             { runValidators: true, new: true }
         )
         .then((user) =>
@@ -103,4 +103,5 @@ module.exports = {
         )
         .catch((err) => res.status(500).json(err));
     },
+
 }
