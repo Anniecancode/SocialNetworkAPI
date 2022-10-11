@@ -5,7 +5,6 @@ module.exports = {
     // GET all users
     getUsers(req, res) {
         User.find()
-        //.select('-__v')
         .then((users) => res.json(users))
         .catch((err) => res.status(500).josn(err));
     },
@@ -13,14 +12,6 @@ module.exports = {
     // GET a single user
     getSingleUser(req, res) {
         User.findOne({ _id: req.params.userId })
-        .populate({
-            path: 'thoughts',
-            select: '-__v',
-        })
-        .populate({
-            path: 'friends',
-            select: '-__v',
-        })
         .select('-__v')
         .then((user) =>
             !user
@@ -73,7 +64,7 @@ module.exports = {
         console.log(req.body);
         User.findOneAndUpdate(
             { _id: req.params.userId },
-            { $addToSet: { friend: req.body }},
+            { $push: { friends: req.params.friendId }},
             { runValidators: true, new: true }
         )
         .then((user) =>
@@ -90,7 +81,7 @@ module.exports = {
     deleteFriend(req, res) {
         User.findOneAndUpdate(
             { _id: req.params.userId },
-            { $pull: { friend: { friendId: req.params.friendId }}},
+            { $pull: { friends: req.params.friendId }},
             { runValidators: true, new: true }
         )
         .then((user) =>
